@@ -5,11 +5,13 @@
              mc:Ignorable="d" d:DesignWidth="250" d:DesignHeight="450"
              xmlns:vm="using:AvaloniaTodo.ViewModels"
              x:DataType="vm:TodoListViewModel"
-             x:Class="AvaloniaTodo.Views.ToDoListView">
+             x:Class="AvaloniaTodo.Views.TodoListView">
     <DockPanel>
         <Button DockPanel.Dock="Bottom"
                 HorizontalAlignment="Stretch"
-                HorizontalContentAlignment="Center">
+                HorizontalContentAlignment="Center"
+                x:CompileBindings="False"
+                Command="{Binding $parent[Window].DataContext.AddItem}">
             Add Item
         </Button>
         <ItemsControl ItemsSource="{Binding ListItems}">

@@ -1,4 +1,7 @@
-﻿using AvaloniaTodo.Services;
+﻿using System;
+using System.Reactive.Linq;
+using AvaloniaTodo.Models;
+using AvaloniaTodo.Services;
 using ReactiveUI;
 
 namespace AvaloniaTodo.ViewModels;
@@ -23,6 +26,20 @@ public class MainWindowViewModel : ViewModelBase
 
     public void AddItem()
     {
-        ContentViewModel = new AddItemViewModel();
+        AddItemViewModel addItemViewModel = new();
+        Observable.Merge(
+                addItemViewModel.OkCommand,
+                addItemViewModel.CancelCommand.Select(_ => (TodoItem?)null))
+            .Take(1)
+            .Subscribe(newItem =>
+            {
+                if (newItem is not null)
+                {
+                    TodoList.ListItems.Add(newItem);
+                }
+
+                ContentViewModel = TodoList;
+            });
+        ContentViewModel = addItemViewModel;
     }
 }
